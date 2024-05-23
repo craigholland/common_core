@@ -9,6 +9,17 @@ description = ""
 authors = [ "Craig Holland <craig_holland@hotmail.com>",]
 readme = "README.md"
 
+[tool.black]
+line-length = 79
+include = "\\.pyi?$"
+exclude = "/(\n    \\.git\n  | \\.hg\n  | \\.mypy_cache\n  | \\.tox\n  | \\.venv\n  | _build\n  | buck-out\n  | build\n  | dist\n)/\n"
+
+[tool.isort]
+atomic = true
+profile = "black"
+line_length = 79
+skip_gitignore = true
+
 [tool.poetry.dependencies]
 python = "^3.11"
 toml = "^0.10.2"
@@ -17,3 +28,4 @@ black = "^24.4.2"
 flake8 = "^7.0.0"
 pytest = "^8.2.0"
 tox = "^4.15.0"
+pre-commit = "^3.7.1"
