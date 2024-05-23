@@ -1,0 +1,3 @@
+STR_BY_DEFAULT: "baseconfig"
+INT_BY_DEFAULT: 1
+BOOL_BY_DEFAULT: False

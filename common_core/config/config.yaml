@@ -1,0 +1,15 @@
+# ENVIRONMENT_VAR_NAME:
+#   datatype: [int, bool, str] (default: str)
+#   required: bool (default: False)
+#   default: [datatype]  (optional)
+#   alt_name: str (optional) Different name to save env var as Config() attribute
+
+# Example:
+#AGE:
+#  datatype: str
+#  default: 18
+#  required: True
+#  alt_name: AGE_IN_YEARS   (> config.age_in_years -> "18")
+
+BASE_CONFIG_INT: 1
+BASE_CONFIG_STR: "baseconfig"

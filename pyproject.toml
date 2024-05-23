@@ -1,0 +1,19 @@
+[build-system]
+requires = [ "poetry-core", "toml",]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "common-core"
+version = "0.2.0"
+description = ""
+authors = [ "Craig Holland <craig_holland@hotmail.com>",]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+toml = "^0.10.2"
+pyyaml = "^6.0.1"
+black = "^24.4.2"
+flake8 = "^7.0.0"
+pytest = "^8.2.0"
+tox = "^4.15.0"
