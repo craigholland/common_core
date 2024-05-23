@@ -1,8 +1,9 @@
-from common_core.config.baseclass.config_field import ConfigField
-from common_core.config.baseclass.config_enums import ConfigEnvVarType
-from dataclasses import dataclass, InitVar, MISSING
+# -*- coding: utf-8 -*-
+from dataclasses import MISSING, InitVar, dataclass
 from typing import Any
 
+from common_core.config.baseclass.config_enums import ConfigEnvVarType
+from common_core.config.baseclass.config_field import ConfigField
 
 ConfigEnvVarType_Priority = [
     # ConfigEnvVarType determines the sequence in which ConfigMeta searches
@@ -10,11 +11,10 @@ ConfigEnvVarType_Priority = [
     # defined first, but possibly overwritten by those of higher priority.
     # Note: A variable of low priority can be 'locked', thus disabling
     # a higher priority from overwriting it.
-
-    ConfigEnvVarType.CONFIG_INSTANCE,   # Highest Priority
+    ConfigEnvVarType.CONFIG_INSTANCE,  # Highest Priority
     ConfigEnvVarType.CONFIG_CLASS,
     ConfigEnvVarType.CONFIG_YAML,
-    ConfigEnvVarType.OS_ENVIRON         # Lowest Priority
+    ConfigEnvVarType.OS_ENVIRON,  # Lowest Priority
 ]
 
 _ERR_PFX = "ConfigValue: "
@@ -22,19 +22,25 @@ _ERR_PFX = "ConfigValue: "
 
 class ConfigValueError:
     """Message Literals used for Errors in ConfigValue."""
-    UNCOMMON = (
-            _ERR_PFX + "Expected type 'ConfigValue'. Got '{0}' instead.")
+
+    UNCOMMON = _ERR_PFX + "Expected type 'ConfigValue'. Got '{0}' instead."
     BAD_FIELD = (
-            _ERR_PFX + "Config `field` must be of type `ConfigField`. "
-                       "Got {0} instead.")
+        _ERR_PFX + "Config `field` must be of type `ConfigField`. "
+        "Got {0} instead."
+    )
     BAD_SOURCE = (
-            _ERR_PFX + "Config `{0}.source` must be of type "
-                       "`ConfigEnvVarType`. Got {1} instead.")
-    BAD_VALUE = (_ERR_PFX + "Config `{0}.value` must be of type(s) {1}. Got "
-                            "{2} instead.")
-    REQUIRED_VALUE = (_ERR_PFX + "field '{0}' value is required and no default"
-                                 " value was defined.")
-    LOCKED = (_ERR_PFX + "Locked. Cannot edit field `{0}`.")
+        _ERR_PFX + "Config `{0}.source` must be of type "
+        "`ConfigEnvVarType`. Got {1} instead."
+    )
+    BAD_VALUE = (
+        _ERR_PFX + "Config `{0}.value` must be of type(s) {1}. Got "
+        "{2} instead."
+    )
+    REQUIRED_VALUE = (
+        _ERR_PFX + "field '{0}' value is required and no default"
+        " value was defined."
+    )
+    LOCKED = _ERR_PFX + "Locked. Cannot edit field `{0}`."
 
 
 @dataclass
@@ -42,7 +48,7 @@ class ConfigValue:
     field: ConfigField
     value: Any = type(MISSING)
     source: ConfigEnvVarType = ConfigEnvVarType.OS_ENVIRON
-    source_name: str = ''
+    source_name: str = ""
     _raise_exception_on_edit: InitVar[bool] = True
 
     def __post_init__(self, _raise_exception_on_edit):
@@ -52,7 +58,7 @@ class ConfigValue:
         self._initialized = True
 
     def __getattribute__(self, item):
-        if item == 'value' and self.initialized:
+        if item == "value" and self.initialized:
             if self._value is type(MISSING):
                 if self.field.default:
                     return self.field.default
@@ -62,7 +68,7 @@ class ConfigValue:
         return super().__getattribute__(item)
 
     def __getattr__(self, item):
-        if item == 'initialized':
+        if item == "initialized":
             return False
         return super().__getattr__(item)
 
@@ -71,27 +77,43 @@ class ConfigValue:
             if self._raise_exception_on_edit:
                 raise ValueError(ConfigValueError.LOCKED.format(key))
             return
-        elif self.initialized and key == 'value':
+        elif self.initialized and key == "value":
             self._value = value
         else:
             super().__setattr__(key, value)
-        if self._raise_exception_on_edit and self.initialized and key != '_initialized':
+        if (
+            self._raise_exception_on_edit
+            and self.initialized
+            and key != "_initialized"
+        ):
             self.__validate()
 
     def __validate(self):
         if not isinstance(self.field, ConfigField):
-            raise ValueError(ConfigValueError.BAD_FIELD.format(type(self.field)))
+            raise ValueError(
+                ConfigValueError.BAD_FIELD.format(type(self.field))
+            )
         field_name = self.field.name
         if not isinstance(self.source, ConfigEnvVarType):
-            raise ValueError(ConfigValueError.BAD_SOURCE.format(field_name, type(self.source)))
+            raise ValueError(
+                ConfigValueError.BAD_SOURCE.format(
+                    field_name, type(self.source)
+                )
+            )
         if not self.field.validate_value(self.value):
             if self.value is None and self.field.required:
-                raise ValueError(ConfigValueError.REQUIRED_VALUE.format(field_name))
-            raise ValueError(ConfigValueError.BAD_VALUE.format(field_name, self.field.datatype, type(self.value)))
+                raise ValueError(
+                    ConfigValueError.REQUIRED_VALUE.format(field_name)
+                )
+            raise ValueError(
+                ConfigValueError.BAD_VALUE.format(
+                    field_name, self.field.datatype, type(self.value)
+                )
+            )
 
     @property
     def value_set(self) -> bool:
-        return getattr(self, '_value', type(MISSING)) is not type(MISSING)
+        return getattr(self, "_value", type(MISSING)) is not type(MISSING)
 
     @property
     def is_valid(self) -> bool:
@@ -100,12 +122,10 @@ class ConfigValue:
             return True
         except ValueError:
             return False
+
     @property
     def initialized(self):
-        return self.__dict__.get('_initialized', False)
-
-
-
+        return self.__dict__.get("_initialized", False)
 
     @property
     def source_priority(self):
@@ -117,17 +137,17 @@ class ConfigValue:
 
     def __le__(self, config_value):
         return self < config_value or self == config_value
-    
+
     def __gt__(self, config_value):
         if self.common(config_value):
             return self.source_priority < config_value.source_priority
         raise TypeError(ConfigValueError.UNCOMMON.format(type(config_value)))
-            
+
     def __eq__(self, config_value):
         if self.common(config_value):
             return self.source_priority == config_value.source_priority
         raise TypeError(ConfigValueError.UNCOMMON.format(type(config_value)))
-        
+
     def __lt__(self, config_value):
         if self.common(config_value):
             return self.source_priority > config_value.source_priority
@@ -139,8 +159,9 @@ class ConfigValue:
 
     def common(self, config_value):
         return (
-                isinstance(config_value, ConfigValue) and
-                config_value.field == self.field)
+            isinstance(config_value, ConfigValue)
+            and config_value.field == self.field
+        )
 
     def compare(self, config_value):
         """Compare 2 ConfigValues and return the one of higher priority IF
@@ -157,15 +178,19 @@ class ConfigValue:
         A 'locked' config_value is where its value cannot be changed once it
          has been explicitly set.
 
-        A 'set' value will always overwrite an 'unset' value, regardless of priority
+        A 'set' value will always overwrite an 'unset' value, regardless of priority    # noqa
         A 'locked' value can never be overwritten, regardless of priority
         """
 
         if self.common(config_value):
-            if (
-                    not config_value.value_set  # New value is unset, so ignore
-                    or (self.value_set and self.is_locked)   # Existing value is locked
-                    or (self.value_set and self > config_value)  # Existing value has higher priority
+            if (  # New value is unset, so ignore
+                not config_value.value_set
+                or
+                # Existing value is locked
+                (self.value_set and self.is_locked)
+                or
+                # Existing value has higher priority
+                (self.value_set and self > config_value)
             ):
                 return self
             return config_value
@@ -175,8 +200,4 @@ class ConfigValue:
         new_field = self.field
         if unlocked:
             new_field.locked = False
-        return ConfigValue(
-            new_field,
-            self.value,
-            self.source
-        )
+        return ConfigValue(new_field, self.value, self.source)

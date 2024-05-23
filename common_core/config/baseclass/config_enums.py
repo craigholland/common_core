@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 from enum import Enum
+
 from common_core.utils.enums.custom_enum import CustomEnum
 
 
@@ -15,5 +17,3 @@ class ConfigEnvVarType(Enum, metaclass=CustomEnum):
     CONFIG_YAML = 2
     CONFIG_CLASS = 3
     CONFIG_INSTANCE = 4
-
-

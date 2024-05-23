@@ -1,9 +1,7 @@
+# -*- coding: utf-8 -*-
 import pytest
-from common_core.config.baseclass import (
-    ConfigMeta,
-    ConfigField,
-    ConfigValue
-)
+
+from common_core.config.baseclass import ConfigMeta, ConfigValue
 
 
 def test_baseconfig_yaml_defaults():
@@ -11,7 +9,7 @@ def test_baseconfig_yaml_defaults():
     yaml_values = {
         "STR_BY_DEFAULT": "baseconfig",
         "INT_BY_DEFAULT": 1,
-        "BOOL_BY_DEFAULT": False
+        "BOOL_BY_DEFAULT": False,
     }
 
     class Config(metaclass=ConfigMeta):
@@ -42,7 +40,7 @@ def test_inherited_config_override():
     yaml_values = {
         "STR_BY_DEFAULT": "baseconfig",
         "INT_BY_DEFAULT": 1,
-        "BOOL_BY_DEFAULT": False
+        "BOOL_BY_DEFAULT": False,
     }
 
     class Config(metaclass=ConfigMeta):
@@ -70,8 +68,8 @@ def test_inherited_config_override():
 
 def test_inherited_config_lock():
     class Config(metaclass=ConfigMeta):
-        STR_BY_DEFAULT = "baseconfig", 'locked'
-        INT_BY_DEFAULT = 1, 'locked'
+        STR_BY_DEFAULT = "baseconfig", "locked"
+        INT_BY_DEFAULT = 1, "locked"
         BOOL_BY_DEFAULT = False
 
     class ChildConfig(Config):
@@ -101,5 +99,3 @@ def test_inherited_config_lock():
 
     with pytest.raises(AttributeError):
         Config.new_attr = "new_value"
-
-

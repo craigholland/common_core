@@ -1,4 +1,5 @@
-from enum import EnumMeta, Enum
+# -*- coding: utf-8 -*-
+from enum import Enum, EnumMeta
 
 
 class CustomEnum(EnumMeta):
@@ -6,6 +7,8 @@ class CustomEnum(EnumMeta):
 
     def names(cls):
         """Return a list of names of the Enum members"""
-        return [member.name for member in cls.__members__.values()
-                if isinstance(member, Enum)]
-
+        return [
+            member.name
+            for member in cls.__members__.values()
+            if isinstance(member, Enum)
+        ]
