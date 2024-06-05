@@ -10,3 +10,4 @@
     - Added DateParser
     - Added jsonn (custom json parser)
     - Added JsonType (custom json type)
+    - Added MapperMeta (Beta)
