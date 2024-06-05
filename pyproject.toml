@@ -40,7 +40,6 @@ google = "^3.0.0"
 google-api-python-client = "^2.132.0"
 jsonschema = "^4.22.0"
 
-
 [tool.poetry.dependencies.solidpy-proto]
 version = "0.0.2"
 source = "pypi-gcp"
