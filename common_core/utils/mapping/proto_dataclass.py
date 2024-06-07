@@ -202,11 +202,7 @@ class MapperMeta(type):
 
         # dc_input must be a dataclass instance or a dataclass class
         if is_dataclass(dc_input):
-            field_list = [f.name for f in fields(dc_input)]
-            if set(dir(dc_input)).intersection(set(field_list)):
-                return type(dc_input)
-            else:
-                return dc_input
+            return dc_input if isinstance(dc_input, type) else type(dc_input)
         return None
 
     @staticmethod
