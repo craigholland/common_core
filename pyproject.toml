@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "common-core"
-version = "0.3.0"
+version = "0.4.0"
 description = ""
 authors = [ "Craig Holland <craig_holland@hotmail.com>",]
 readme = "README.md"
@@ -39,7 +39,3 @@ pytz = "^2024.1"
 google = "^3.0.0"
 google-api-python-client = "^2.132.0"
 jsonschema = "^4.22.0"
-
-[tool.poetry.dependencies.solidpy-proto]
-version = "0.0.2"
-source = "pypi-gcp"

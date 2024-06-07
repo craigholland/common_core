@@ -260,34 +260,35 @@ class MapperMeta(type):
         return dc_class, pr_class, mapped_fields
 
 
-import datetime as dt
-from dataclasses import dataclass
+#
+# import datetime as dt
+# from dataclasses import dataclass
+#
+#
+# @dataclass
+# class PersonDC:
+#     id: str
+#     first_name: str
+#     middle_name: str
+#     last_name: str
+#     date_of_birth: dt.date
+#
+#
+# from solidpy_proto.protopy.solidpy_test_pb2 import Person as PersonProto
 
-
-@dataclass
-class PersonDC:
-    id: str
-    first_name: str
-    middle_name: str
-    last_name: str
-    date_of_birth: dt.date
-
-
-from solidpy_proto.protopy.solidpy_test_pb2 import Person as PersonProto
-
-
-class PersonMapper(metaclass=MapperMeta):
-    __dataclass__ = PersonDC
-    __protobuf__ = PersonProto
-
-
-person = PersonDC(
-    id="1a2b",
-    first_name="John",
-    middle_name="Doe",
-    last_name="Smith",
-    date_of_birth=dt.date(1973, 8, 30),
-)  # noqa
+#
+# class PersonMapper(metaclass=MapperMeta):
+#     __dataclass__ = PersonDC
+#     __protobuf__ = PersonProto
+#
+#
+# person = PersonDC(
+#     id="1a2b",
+#     first_name="John",
+#     middle_name="Doe",
+#     last_name="Smith",
+#     date_of_birth=dt.date(1973, 8, 30),
+# )  # noqa
 
 
 class MapperMeta_old(type):
