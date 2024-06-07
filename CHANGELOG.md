@@ -10,3 +10,8 @@
     - Added DateParser
     - Added jsonn (custom json parser)
     - Added JsonType (custom json type)
+    - Added MapperMeta (Beta)
+
+## [0.4.0] - 2024-06-11
+    - Version bump
+    - Fixed build.sh
