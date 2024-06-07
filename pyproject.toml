@@ -4,16 +4,14 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "common-core"
-version = "0.2.0"
+version = "0.4.0"
 description = ""
 authors = [ "Craig Holland <craig_holland@hotmail.com>",]
 readme = "README.md"
-
 [[tool.poetry.source]]
 name = "pypi-gcp"
-url = "https://us-west1-python.pkg.dev/cholland-form/pypi-gcp"
-priority = 'supplemental'
-
+url = "https://us-west1-python.pkg.dev/cholland-form/pypi-gcp/simple"
+priority = "supplemental"
 
 [tool.black]
 line-length = 79
@@ -27,7 +25,7 @@ line_length = 79
 skip_gitignore = true
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 toml = "^0.10.2"
 pyyaml = "^6.0.1"
 black = "^24.4.2"
